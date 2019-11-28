@@ -19,6 +19,8 @@ port="22"
 rsync -av -e "ssh -p $port" $source $machine:$destination
 if [ $? -eq 0 ]; then
     logger "[OK - Backup] rsync backup successful"
+    exit 0
 else
     logger "[FAILED - Backup] rsync backup failed. Please check your backup script or system settings"
+    exit 1
 fi

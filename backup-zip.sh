@@ -21,10 +21,13 @@ if [ $? -eq 0 ]; then
     logger "zip backup is successfully created"
         scp -P $port /home/"$username"/"$backup_name"-"$backup_date".zip $machine:$destination
         if [ $? -eq 0 ]; then
-                logger "[OK - Backup] ssh backup transfer is successful"
-                else
-                logger "[FAILED - Backup] ssh backup transfer failed. Please check your backup script or system settings"
+            logger "[OK - Backup] ssh backup transfer is successful"
+            exit 0
+        else
+            logger "[FAILED - Backup] ssh backup transfer failed. Please check your backup script or system settings"
+            exit 1
         fi
 else
     logger "[FAILED - Backup] zip backup file was not created. Please check your backup script or system settings"
+    exit 1
 fi

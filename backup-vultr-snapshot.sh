@@ -31,6 +31,7 @@ if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
     fi
 fi
 
+#Creating a snapshot for every existing VPS
 for vps in $VPS_names; do
     VPS_label=$(curl -s "https://api.vultr.com/v1/server/list?api_key=$api_key&SUBID=$vps" | jq -r '.label')
     if curl -s "https://api.vultr.com/v1/snapshot/create?api_key=$api_key" --data SUBID=$vps --data description=$VPS_label | grep -q 'SNAPSHOTID'; then

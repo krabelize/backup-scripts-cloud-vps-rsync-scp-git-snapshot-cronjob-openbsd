@@ -23,18 +23,18 @@ cd $source
 git config --global user.name $username
 git init $source
 if [ $? -eq 0 ]; then
-        git add -u
-        git add *
-        git commit --author="$username system cronjob sync <>" -m $backupdate
-        git push -f https://$credentials@$destination master
-        if [ $? -eq 0 ]; then
-                logger "[OK - Backup] GitHub backup successful"
-                exit 0
-        else
-                logger "[FAILED - Backup] GitHub backup script failed. Please check your backup script or system settings"
-                exit 1
-        fi
+    git add -u
+    git add *
+    git commit --author="$username system cronjob sync <>" -m $backupdate
+    git push -f https://$credentials@$destination master
+    if [ $? -eq 0 ]; then
+        logger "[OK - Backup] GitHub backup successful"
+        exit 0
+    else
+        logger "[FAILED - Backup] GitHub backup script failed. Please check your backup script or system settings"
+        exit 1
+    fi
 else
     logger "[FAILED - Backup] GitHub backup script failed. Please check your backup script or system settings"
-        exit 1
+    exit 1
 fi

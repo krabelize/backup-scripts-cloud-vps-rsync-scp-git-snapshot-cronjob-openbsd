@@ -19,7 +19,7 @@ port="22"
 zip -r /home/"$username"/"$backup_name"-"$backup_date".zip $source
 if [ $? -eq 0 ]; then
     logger "zip backup is successfully created"
-        scp -P $port /home/"$username"/"$backup_name"-"$backup_date".zip $machine:$destination
+    scp -P $port /home/"$username"/"$backup_name"-"$backup_date".zip $machine:$destination
         if [ $? -eq 0 ]; then
             logger "[OK - Backup] ssh backup transfer is successful"
             exit 0

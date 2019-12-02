@@ -1,20 +1,18 @@
 #!/bin/sh
 #By krabelize | cryptsus.com
-#Create automatic backup to GitHub for the httpd directory
+#Create automatic backup to GitHub for the httpd directory. Tested on OpenBSD 6.6
 #Check your GitHub repo security settings. Select a public or private repo
 #Generate a unique GitHub personal access tokens which is used as your password
 #Perform a git clone in /var/www/ the first time after creating the repo on github.com
 #chown -R $username:$username .git/ to execute the git command without root user
-
-#Edit crontab with the following entry
-#Run this script every night at 06:00
+#Edit crontab with the following entry. Run this script every night at 03:00
 #crontab -e
-#0 5 * * * /home/$username/backup-github.sh
+#0 3 * * * * /home/$username/backup-rsync.sh
 
 #Variables
 source="/var/www/htdocs"
 username="username"
-github_token="github_token_here"
+github_token="GITHUB_TOKEN_HERE"
 credentials="$username:$github_token"
 destination="github.com/$username/htdocs.git"
 backupdate=$(date +"%d-%m-%Y")

@@ -5,6 +5,7 @@
 #Only allow the Vultr API to be accessed from your bastion /32 Vultr instance(s)
 #Install jquery on your bastion VPS (pkg_add jq)
 #Add this script to your crontab under a non-root account
+#Edit crontab with the following entry. Run this script every night at 06:00
 #crontab -e
 #0 6 * * * /home/username/backup-vultr-snapshot.sh
 

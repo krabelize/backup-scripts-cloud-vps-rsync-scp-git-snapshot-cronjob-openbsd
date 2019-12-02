@@ -1,6 +1,6 @@
 #!/bin/sh
 #By krabelize | cryptsus.com
-#Create automatic snapshots on vultr.com and delete older snapshots
+#Create automatic snapshots on vultr.com and delete older snapshots. Tested on OpenBSD 6.6
 #Go to https://my.vultr.com/settings/#settingsapi to get your API key
 #Only allow the Vultr API to be accessed from your bastion /32 Vultr instance(s)
 #Install jquery on your bastion VPS (pkg_add jq)

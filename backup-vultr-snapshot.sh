@@ -10,7 +10,7 @@
 
 #Variables
 #Put your API key here
-api_key="your_vultr_api_key_here"
+api_key="YOUR_API_KEY_HERE"
 #We keep the total number of snapshots under 11 based on two virtual private servers (VPS)
 snapshot_limit="8"
 
@@ -26,8 +26,10 @@ until [ "$snapshot_count" -eq "$snapshot_limit" ]; do
     curl -s "https://api.vultr.com/v1/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
     if [ "$?" -eq "0" ]; then
         logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
+		exit 0
     else
         logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
+		exit 1
     fi
 done
 
@@ -36,7 +38,9 @@ for vps in $VPS_names; do
     VPS_label=$(curl -s "https://api.vultr.com/v1/server/list?api_key=$api_key&SUBID=$vps" | jq -r '.label')
     if curl -s "https://api.vultr.com/v1/snapshot/create?api_key=$api_key" --data SUBID=$vps --data description=$VPS_label | grep -q 'SNAPSHOTID'; then
         logger "[OK - Backup] Creating a snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"
+		exit 0
     else
         logger "[FAILED - Backup] Failed to create snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"
+		exit 1
     fi
 done

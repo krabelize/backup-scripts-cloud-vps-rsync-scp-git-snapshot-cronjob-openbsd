@@ -8,14 +8,14 @@ Backup scripts in shell to backup a web directory with rsync, scp, git and snaps
 
 You find all three scripts in this repository. We configure these script with the help of crontab:
 
-<code>
+```bash
 cronjob -e<br>
 
-0 3 * * * /home/krabelize/backup-rsync.sh<br>
-0 4 * * * /home/krabelize/backup-zip.sh<br>
-0 5 * * * /home/krabelize/backup-github.sh<br>
+0 3 * * * /home/krabelize/backup-rsync.sh
+0 4 * * * /home/krabelize/backup-zip.sh
+0 5 * * * /home/krabelize/backup-github.sh
 0 6 * * * /home/krabelize/backup-vultr-snapshot.sh
-</code>
+```
   
 # License
 Berkeley Software Distribution (BSD)

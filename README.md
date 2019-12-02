@@ -2,7 +2,7 @@
 Backup scripts in shell to backup a web directory with rsync, scp, git and snapshots. Tested on OpenBSD 6.6
 
 1) rsync to a different machine
-2) compressed zip of the whole directory to a different directory and to a different machine
+2) Compressed and encrypted zip file of the whole directory to a different directory and to a different machine
 3) GitHub sync which obviously includes version control (VCS)
 4) Vultr daily snapshots of the complete VPS 
 

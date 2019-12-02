@@ -1,4 +1,4 @@
-# backup-scripts-cloud-vps-rsync-scp-git-snapshot-cronjob-openbsd
+# backup Scripts for Cloud VPS-ers with rsync scp git and Snapshot by leveraging cronjobs on OpenBSD
 Backup scripts in shell to backup a web directory with rsync, scp, git and snapshots. Tested on OpenBSD 6.6
 
 1) rsync to a different machine
@@ -8,14 +8,15 @@ Backup scripts in shell to backup a web directory with rsync, scp, git and snaps
 
 You find all three scripts in this repository. We configure these script with the help of crontab:
 
-<code>cronjob -e
+<bash>
+cronjob -e
 
 0 3 * * * /home/krabelize/backup-rsync.sh
 0 4 * * * /home/krabelize/backup-zip.sh
 0 5 * * * /home/krabelize/backup-github.sh
 0 6 * * * /home/krabelize/backup-vultr-snapshot.sh
-</code>
-
+</bash>
+  
 # License
 Berkeley Software Distribution (BSD)
 

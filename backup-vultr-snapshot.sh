@@ -11,25 +11,25 @@
 #Variables
 #Put your API key here
 api_key="your_vultr_api_key_here"
-#We keep the total number of snapshots under 10 based on two virtual private servers (VPS)
+#We keep the total number of snapshots under 11 based on two virtual private servers (VPS)
 snapshot_limit="8"
 
 #Query all VPS SUBIDs
 VPS_names=$(curl -s "https://api.vultr.com/v1/server/list?api_key=$api_key" | jq -r 'keys | '.[]'')
 #Query all snapshots and count them
-snapshot_count=$(curl -s "https://api.vultr.com/v1/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | wc -l)
+snapshot_count=$(curl -s "https://api.vultr.com/v1/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | wc -l | awk '{ print $1 }')
 #Query oldest snapshot created
-last_snapshot_ID=$(curl -s "https://api.vultr.com/v1/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | tail -1)
+last_snapshot_ID=$(curl -s "https://api.vultr.com/v1/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
 
-#Deleting the oldest snapshot present with Snapshot ID
-if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
+#Delete the oldest snapshots until the $snapshot_limit is reached
+until [ "$snapshot_count" -eq "$snapshot_limit" ]; do
     curl -s "https://api.vultr.com/v1/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
     if [ "$?" -eq "0" ]; then
         logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
     else
         logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
     fi
-fi
+done
 
 #Creating a snapshot for every existing VPS
 for vps in $VPS_names; do

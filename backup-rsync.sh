@@ -1,11 +1,9 @@
 #!/bin/sh
 #By krabelize | cryptsus.com
-#httpd htdocs directory backup script tested on OpenBSD 6.6
+#httpd htdocs directory backup script. Tested on OpenBSD 6.6
 #Make sure rsync is installed on both nodes
 #Align the 'backup' folder owner with the same ssh-keypair user
-
-#Edit crontab with the following entry
-#Run rsync every night at 04:00
+#Edit crontab with the following entry. Run this script every night at 04:00
 #crontab -e
 #0 3 * * * * /home/$username/backup-rsync.sh
 

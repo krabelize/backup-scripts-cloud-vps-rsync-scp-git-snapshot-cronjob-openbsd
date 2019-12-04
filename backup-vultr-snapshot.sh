@@ -25,7 +25,7 @@ snapshot_count=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys | .
 #Delete the oldest snapshots until the $snapshot_limit is reached
 until [ "$snapshot_count" -le "$snapshot_limit" ]; do
     last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
-    curl -s "https://api.vultr.com/v1/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
+    curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
     if [ "$?" -eq "0" ]; then
         sleep 1.5
         logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
@@ -37,7 +37,7 @@ done
 #Creating a snapshot for every existing VPS
 for vps in $VPS_names; do
     VPS_label=$(curl -s "$API/server/list?api_key=$api_key&SUBID=$vps" | jq -r '.label')
-    if curl -s "https://api.vultr.com/v1/snapshot/create?api_key=$api_key" --data SUBID=$vps --data description=$VPS_label | grep -q 'SNAPSHOTID'; then
+    if curl -s "$API/snapshot/create?api_key=$api_key" --data SUBID=$vps --data description=$VPS_label | grep -q 'SNAPSHOTID'; then
         logger "[OK - Backup] Creating a snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"
     else
         logger "[FAILED - Backup] Failed to create snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"

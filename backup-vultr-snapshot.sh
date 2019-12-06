@@ -21,18 +21,20 @@ snapshot_limit="8"
 VPS_names=$(curl -s "$API/server/list?api_key=$api_key" | jq -r 'keys | '.[]'')
 #Query all snapshots and count them
 snapshot_count=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | wc -l | awk '{ print $1 }')
+#Query last snapshot ID
+last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
 
 #Delete the oldest snapshots until the $snapshot_limit is reached
-until [ "$snapshot_count" -le "$snapshot_limit" ]; do
-    last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
+if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
     curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
     if [ "$?" -eq "0" ]; then
-        sleep 1.5
         logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
+            break
     else
         logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
+        exit 1
     fi
-done
+fi
 
 #Creating a snapshot for every existing VPS
 for vps in $VPS_names; do

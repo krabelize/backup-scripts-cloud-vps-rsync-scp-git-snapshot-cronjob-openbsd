@@ -1,4 +1,4 @@
-# Backup Scripts for Cloud VPS-ers with rsync scp git and Snapshot by leveraging cronjobs on OpenBSD
+# Backup scripts for Cloud VPSers/VMs with rsync scp git and Snapshots by leveraging cronjobs on OpenBSD
 Backup scripts in shell to backup a web directory with rsync, scp, git and snapshots. Tested on OpenBSD 6.6. Read [this article](https://cryptsus.com/blog/xxxxxxxxxxxxxx.html) for more information.
 
 1) Synchronise the web directory to another directory on a VPS over SSH

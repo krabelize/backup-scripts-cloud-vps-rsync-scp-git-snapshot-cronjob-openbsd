@@ -11,7 +11,7 @@
 
 #Variables
 #Put your API key here
-api_key="API_KEY_HERE"
+api_key="YOUR_API_KEY_HERE"
 #Vultr API
 API="https://api.vultr.com/v1"
 #We keep the total number of snapshots under 11 based on two virtual private servers (VPS)
@@ -29,7 +29,7 @@ if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
     curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
     if [ "$?" -eq "0" ]; then
         logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
-            break
+        break
     else
         logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
         exit 1

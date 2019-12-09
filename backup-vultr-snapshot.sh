@@ -33,7 +33,7 @@ last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_u
 
 #Delete the oldest snapshots until the $snapshot_limit is reached
 if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
-        until [ "$snapshot_count" = "$snapshot_limit" ]; do
+    until [ "$snapshot_count" = "$snapshot_limit" ]; do
     last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
     curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
         sleep 1

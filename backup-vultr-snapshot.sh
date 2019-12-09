@@ -37,13 +37,13 @@ if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
     last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
     curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
         sleep 1
-                if [ "$?" -eq "0" ]; then
-                        logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
-                else
-                        logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
-                        exit 1
-                fi
-        done
+        if [ "$?" -eq "0" ]; then
+            logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
+        else
+            logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
+            exit 1
+        fi
+    done
 fi
 
 #Creating a snapshot for every existing VPS

@@ -20,9 +20,10 @@ port="22"
 zip -r $backup_name $source
 if [ $? -eq 0 ]; then
     #logger "zip backup file is successfully created"
-    openssl enc -in $backup_name -out $backup_name.enc -pass file:$aes_key -e -salt -aes-256-cbc -pbkdf2
+    openssl enc -in $backup_name -out $backup_name.enc -pass file:$aes_key -e -salt -aes-256-cbc -iter 100000 -pbkdf2
     if [ $? -eq 0 ]; then
         #logger "encrypted zip backup file is successfully created"
+        rm $backup_name
         scp -P $port $backup_name.enc $machine:$remote_destination
         if [ $? -eq 0 ]; then
             logger "[OK - Backup] ssh encrypted zip backup file transfer is successful"

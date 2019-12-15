@@ -24,27 +24,19 @@ snapshot_count=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys | .
 #Query last snapshot ID
 last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
 
-#Query all VPS SUBIDs
-VPS_names=$(curl -s "$API/server/list?api_key=$api_key" | jq -r 'keys | '.[]'')
-#Query all snapshots and count them
-snapshot_count=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | wc -l | awk '{ print $1 }')
-#Query last snapshot ID
-last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
-
 #Delete the oldest snapshots until the $snapshot_limit is reached
-if [ "$snapshot_count" -gt "$snapshot_limit" ]; then
-    until [ "$snapshot_count" = "$snapshot_limit" ]; do
+while [[ "$snapshot_count" -gt "$snapshot_limit" ]]; do
     last_snapshot_ID=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys_unsorted | .[]' | tail -1)
     curl -s "$API/snapshot/destroy?api_key=$api_key" --data SNAPSHOTID=$last_snapshot_ID
-        sleep 1
-        if [ "$?" -eq "0" ]; then
-            logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
-        else
-            logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
-            exit 1
-        fi
-    done
-fi
+    sleep 1
+    if [ "$?" -eq "0" ]; then
+        snapshot_count=$(curl -s "$API/snapshot/list?api_key=$api_key" | jq -r 'keys | .[]' | wc -l | awk '{ print $1 }')
+        logger "[Vultr.com] Deleted Snapshot ID: '$last_snapshot_ID'"
+    else
+        logger "[Vultr.com] Failed to delete snapshot ID: '$last_snapshot_ID'"
+        exit 1
+    fi
+done
 
 #Creating a snapshot for every existing VPS
 for vps in $VPS_names; do

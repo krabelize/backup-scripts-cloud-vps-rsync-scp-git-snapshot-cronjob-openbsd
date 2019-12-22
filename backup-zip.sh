@@ -26,10 +26,12 @@ if [ $? -eq 0 ]; then
         rm $backup_name
         scp -P $port $backup_name.enc $machine:$remote_destination
         if [ $? -eq 0 ]; then
-            logger "[OK - Backup] ssh encrypted zip backup file transfer is successful"
+            logger "[OK - Backup] SSH encrypted zip backup file transfer is successful"
+            sha512 $backup_name.enc > $backup_name.enc.sha512
+            chmod 0400 $backup_name.enc.sha512
             exit 0
         else
-            logger "[FAILED - Backup] ssh encrypted zip transfer failed. Please check your backup script or system settings"
+            logger "[FAILED - Backup] SSH encrypted zip transfer failed. Please check your backup script or system settings"
             exit 1
         fi
     else

@@ -11,8 +11,8 @@
 
 #Variables
 #Put your API key here
-api_key="YOUR_API_KEY_HERE"
-#Vultr API
+api_key="API_KEY_HERE"
+#Vultr APIP
 API="https://api.vultr.com/v1"
 #We keep the total number of snapshots under 11 based on two virtual private servers (VPS)
 snapshot_limit="8"

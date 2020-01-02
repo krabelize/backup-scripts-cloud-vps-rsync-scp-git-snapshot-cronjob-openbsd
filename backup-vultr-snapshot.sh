@@ -12,7 +12,7 @@
 #Variables
 #Put your API key here
 api_key="API_KEY_HERE"
-#Vultr APIP
+#Vultr API
 API="https://api.vultr.com/v1"
 #We keep the total number of snapshots under 11 based on two virtual private servers (VPS)
 snapshot_limit="8"
@@ -42,8 +42,8 @@ done
 for vps in $VPS_names; do
     VPS_label=$(curl -s "$API/server/list?api_key=$api_key&SUBID=$vps" | jq -r '.label')
     if curl -s "$API/snapshot/create?api_key=$api_key" --data SUBID=$vps --data description=$VPS_label | grep -q 'SNAPSHOTID'; then
-        logger "[OK - Backup] Creating a snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"
+        logger "[OK - Backup] Creating Vultr snapshot for VPS: '$VPS_label' with SUBID: '$vps'"
     else
-        logger "[FAILED - Backup] Failed to create snapshot for VPS on Vultr: '$VPS_label' with SUBID: '$vps'"
+        logger "[FAILED - Backup] Failed to create Vultr snapshot for VPS: '$VPS_label' with SUBID: '$vps'"
     fi
 done

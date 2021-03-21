@@ -20,6 +20,7 @@ On the target backup VPS we configure a retention time of 180 days with cron. Th
 
 ```bash
 crontab -e
+
 0 7 * * * find /home/username/backup-zip -type f -mtime +180 -name "*.zip.enc" -exec rm {} \;
 ```
 

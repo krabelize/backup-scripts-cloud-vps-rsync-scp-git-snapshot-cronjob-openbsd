@@ -9,14 +9,20 @@ Backup scripts in shell to backup a web directory with rsync, scp, git and snaps
 You find all three scripts in this repository. We configure these script with the help of crontab:
 
 ```bash
-cronjob -e
+crontab -e
 
 0 3 * * * /home/username/backup-rsync.sh
 0 4 * * * /home/username/backup-zip.sh
 0 5 * * * /home/username/backup-github.sh
 0 6 * * * /home/username/backup-vultr-snapshot.sh
 ```
-  
+On the target backup VPS configure a retention time of 180 days. This means backups older than 180 days will be pruged/deleted to save disk space:
+
+```bash
+crontab -e
+0 7 * * * find /home/username/backup-zip -type f -mtime +180 -name "*.zip.enc" -exec rm {} \;
+```
+
 # License
 Berkeley Software Distribution (BSD)
 

@@ -16,7 +16,7 @@ crontab -e
 0 5 * * * /home/username/backup-github.sh
 0 6 * * * /home/username/backup-vultr-snapshot.sh
 ```
-On the target backup VPS configure a retention time of 180 days. This means backups older than 180 days will be pruged/deleted to save disk space:
+On the target backup VPS we configure a retention time of 180 days with cron. This way encrypted backups older than 180 days will be automatically pruged/deleted to save disk space:
 
 ```bash
 crontab -e
